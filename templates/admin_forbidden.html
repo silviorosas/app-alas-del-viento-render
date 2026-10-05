@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Denegado (403) - Alas del Viento</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-cyan: #06b6d4;
+            --primary-teal: #14b8a6;
+            --dark-blue: #1e40af;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #f8fafc;
+            padding: 1.5rem;
+        }
+
+        .forbidden-card {
+            background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            max-width: 520px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+        .icon-shield-pulse {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ef4444;
+            font-size: 2.5rem;
+            animation: pulse-red 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--dark-blue);
+            border-color: var(--dark-blue);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="forbidden-card">
+        <div class="icon-shield-pulse">
+            <i class="fas fa-shield-halved"></i>
+        </div>
+
+        <span class="badge bg-danger px-3 py-2 rounded-pill fw-bold text-uppercase mb-3">
+            Error 403 • Acceso Prohibido
+        </span>
+
+        <h3 class="fw-bold mb-2">Panel SuperAdmin Restringido</h3>
+        <p class="text-secondary small mb-4">
+            {{ mensaje or "El acceso a la visualización de preinscripciones requiere de una clave administrativa autorizada." }}
+        </p>
+
+        <form method="GET" action="{{ url_for('admin_preinscripciones') }}" class="mb-4">
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-dark border-secondary text-secondary">
+                    <i class="fas fa-key"></i>
+                </span>
+                <input type="password" name="key" class="form-control bg-dark text-white border-secondary" 
+                       placeholder="Ingresa clave de acceso admin..." required autofocus>
+                <button class="btn btn-primary-custom" type="submit">
+                    <i class="fas fa-arrow-right me-1"></i> Entrar
+                </button>
+            </div>
+            <div class="form-text text-muted text-start small">
+                <i class="fas fa-info-circle me-1"></i> Ingrese la clave institucional proporcionada por el establecimiento.
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-center gap-2 pt-2 border-top border-secondary">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-sm px-4">
+                <i class="fas fa-home me-1"></i> Volver al Inicio
+            </a>
+            <a href="{{ url_for('contacto') }}" class="btn btn-link btn-sm text-decoration-none text-secondary">
+                Contacto
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

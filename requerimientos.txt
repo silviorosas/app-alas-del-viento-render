@@ -1,0 +1,13 @@
+Abre Visual Studio Code y carga la carpeta donde está tu proyecto.
+
+Abre la terminal desde “Terminal → New Terminal”.
+
+En la terminal escribe pip install flask y presiona Enter para instalar Flask.
+
+Opcionalmente, verifica la instalación escribiendo pip show flask.
+
+Asegúrate de estar en la carpeta donde está tu archivo app.py y ejecuta python app.py (o python3 app.py según tu sistema).
+
+Flask te mostrará una dirección como http://127.0.0.1:5000; cópiala y pégala en tu navegador para ver la aplicación.
+
+Mientras la terminal esté abierta, el sitio seguirá activo; para detenerlo, presiona CTRL + C.

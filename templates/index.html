@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es" style="height: auto; min-height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alas del Viento - Escuela de Música y Coro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-cyan: #06b6d4;
+            --primary-teal: #14b8a6;
+            --dark-blue: #1e40af;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            padding-bottom: 70px;
+        }
+
+        .bg-blue-gradient {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 50%, var(--primary-teal) 100%);
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--dark-blue);
+            border-color: var(--dark-blue);
+            color: white;
+        }
+
+        .btn-outline-primary-custom {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-outline-primary-custom:hover {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        /* INICIO: CLASES DE BADGE CON COLORES VIVOS */
+        .badge-purple {
+            background-color: #9C27B0;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .badge-pink {
+            background-color: #E91E63;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .badge-blue {
+            background-color: #2196F3;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .badge-green {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .badge-orange {
+            background-color: #FF9800;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .badge-magenta {
+            background-color: #FF00FF;
+            color: white;
+            font-weight: 600;
+            padding: 0.4em 0.8em;
+        }
+
+        .card-event {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-event:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* Card estilo Oferta Educativa */
+        .card-edu {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-edu:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.18);
+        }
+
+        .card-edu img {
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .card-edu .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Contenedor de la imagen para posicionar el badge de finalizado */
+        .card-event-image-container {
+            position: relative;
+            overflow: hidden;
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+        }
+
+        .card-event-image-container img {
+            height: 200px;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        /* Estilo para el badge de Finalizado (Bordó Suave) */
+        .finished-overlay-badge {
+            position: absolute;
+            top: 46px;
+            right: -15px;
+            transform: rotate(45deg);
+            z-index: 10;
+            text-transform: uppercase;
+            background-color: #c55757;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.2rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            width: 150px;
+            text-align: center;
+            display: none;
+        }
+
+        .event-finished .finished-overlay-badge {
+            display: inline-block;
+        }
+
+        .event-finished .card-event-image-container img {
+            filter: brightness(0.6);
+        }
+
+        .card-description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-btn {
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background-color: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .navbar-brand {
+            color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-carousel {
+            height: 500px;
+        }
+
+        .hero-carousel .carousel-item {
+            height: 500px;
+        }
+
+        .hero-carousel .carousel-item img {
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.45) 0%, rgba(6, 182, 212, 0.4) 50%, rgba(20, 184, 166, 0.35) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .price-tag {
+            color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .institution-footer {
+            background-color: #111827;
+            color: #d1d5db;
+            padding: 3rem 0 1.5rem 0;
+        }
+
+        .footer-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.75rem 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #9ca3af;
+        }
+
+        .social-icon {
+            color: var(--primary-cyan);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-teal);
+            transform: scale(1.1);
+        }
+
+        .modal-header {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-dialog-custom {
+            max-width: 640px;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            z-index: 3;
+        }
+
+        @media (max-width: 768px) {
+            .footer-text {
+                font-size: 0.65rem;
+            }
+
+            .social-icon {
+                font-size: 1rem;
+            }
+
+            body {
+                padding-bottom: 70px;
+            }
+
+            .modal-dialog-custom {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body style="height: auto; min-height: 100%;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-music text-primary me-2 fs-3"></i>
+                <span>Alas del Viento</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#oferta-educativa">Oferta Educativa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#eventos-seccion">Eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('contacto') }}">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CARRUSEL HERO -->
+    <section class="hero-section">
+        <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/static/img/carrusel1.png" class="d-block w-100" alt="Coro Alas del Viento Concierto">
+                </div>
+                <div class="carousel-item">
+                    <img src="/static/img/carrusel2.png" class="d-block w-100" alt="Ensayo Coral e Instrumental">
+                </div>
+                <div class="carousel-item">
+                    <img src="/static/img/carrusel3.png" class="d-block w-100" alt="Orquesta Sinfónica Infantil y Juvenil">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content text-white">
+            <h1 class="display-3 fw-bold mb-2">Alas del Viento</h1>
+            <p class="lead fs-4">Escuela de Música y Coro - General Alvear, Mendoza</p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: OFERTA EDUCATIVA -->
+    <section id="oferta-educativa" class="container py-5">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase fw-semibold mb-2">Formación Musical</span>
+            <h2 class="display-5 fw-bold text-dark mb-2">Oferta Educativa</h2>
+            <p class="text-muted fs-5">Inscripciones abiertas para nuestras salas de iniciación, práctica coral y ensamble orquestal sinfónico</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Card 1: Sala 0 a 5 años -->
+            <div class="col-md-4">
+                <div class="card card-edu">
+                    <div class="position-relative">
+                        <img src="/static/img/sala_0_5.png" class="card-img-top" alt="Niños haciendo actividades musicales de orquesta sinfónica (0 a 5 años)">
+                        <span class="badge bg-info text-dark position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">0 a 5 Años</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div>
+                            <h4 class="card-title fw-bold text-dark mb-2">Sala de 0 a 5 años</h4>
+                            <p class="card-text text-muted mb-4">
+                                Estimulación musical temprana, vivencia rítmica, expresión corporal y primeros contactos con instrumentos de orquesta sinfónica adaptados para la primera infancia.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary-custom w-100 btn-preinscribir py-2 fw-semibold" 
+                                data-sala="Sala de 0 a 5 años" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#preinscripcionModal">
+                            <i class="fas fa-user-plus me-2"></i>Preinscribirse
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Sala 6 a 11 años -->
+            <div class="col-md-4">
+                <div class="card card-edu">
+                    <div class="position-relative">
+                        <img src="/static/img/sala_6_11.png" class="card-img-top" alt="Canto coral e infantil (6 a 11 años)">
+                        <span class="badge bg-success position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">6 a 11 Años</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div>
+                            <h4 class="card-title fw-bold text-dark mb-2">Sala de 6 a 11 años</h4>
+                            <p class="card-text text-muted mb-4">
+                                Formación vocal e instrumental infantil. Técnica vocal básica, lectura de lenguaje musical y participación en el coro infantil y ensamble orquestal.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary-custom w-100 btn-preinscribir py-2 fw-semibold" 
+                                data-sala="Sala de 6 a 11 años" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#preinscripcionModal">
+                            <i class="fas fa-user-plus me-2"></i>Preinscribirse
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Sala 12 a 17 años -->
+            <div class="col-md-4">
+                <div class="card card-edu">
+                    <div class="position-relative">
+                        <img src="/static/img/sala_12_17.png" class="card-img-top" alt="Coro juvenil y orquesta (12 a 17 años)">
+                        <span class="badge bg-purple position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill fw-bold">12 a 17 Años</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div>
+                            <h4 class="card-title fw-bold text-dark mb-2">Sala de 12 a 17 años</h4>
+                            <p class="card-text text-muted mb-4">
+                                Coro juvenil y orquesta sinfónica. Interpretación de repertorio polifónico, perfeccionamiento instrumental y participación en conciertos y giras locales.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary-custom w-100 btn-preinscribir py-2 fw-semibold" 
+                                data-sala="Sala de 12 a 17 años" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#preinscripcionModal">
+                            <i class="fas fa-user-plus me-2"></i>Preinscribirse
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: EVENTOS -->
+    <section id="eventos-seccion" class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 border-top pt-5">
+            <div>
+                <h3 class="fw-bold text-dark mb-1"><i class="fas fa-calendar-alt text-primary me-2"></i>Eventos y Presentaciones</h3>
+                <p class="text-muted mb-0">Agenda de conciertos en los que participa la Escuela y Coro Alas del Viento</p>
+            </div>
+        </div>
+
+        <div class="row align-items-center mb-4">
+            <div class="col-6 col-lg-3 mb-2 mb-lg-0">
+                <div class="dropdown w-100">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="categoryDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" data-current-category="todos">
+                        <i class="fas fa-filter me-2"></i>
+                        Categorías
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <li><a class="dropdown-item category-filter active" href="#" data-category="todos">Todos</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="musica"><i class="fas fa-music me-2"></i>Música</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="educacion"><i class="fas fa-graduation-cap me-2"></i>Educación</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="teatro"><i class="fas fa-theater-masks me-2"></i>Teatro</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="arte"><i class="fas fa-palette me-2"></i>Arte</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="deportes"><i class="fas fa-futbol me-2"></i>Deportes</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="gastronomia"><i class="fas fa-utensils me-2"></i>Gastronomía</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="vendimia"><i class="bi-basket-fill me-2"></i>Vendimia</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="fiesta"><i class="fa-solid fa-glass-cheers me-2"></i>Fiesta</a></li>
+                        <li><a class="dropdown-item category-filter" href="#" data-category="cine"><i class="fa-solid fa-film me-2"></i>Cine</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-7 d-none d-lg-block"></div>
+
+            <div class="col-6 col-lg-2 d-flex justify-content-end">
+                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#nuevoEventoModal">
+                    <i class="fas fa-plus me-2"></i>Nuevo Evento
+                </button>
+            </div>
+        </div>
+
+        <div class="row g-4" id="eventsContainer">
+            {% for e in eventos %}
+            <div class="col-md-6 col-lg-4 event-card-column" data-tipo="{{ e.tipo | lower }}" data-fecha="{{ e.fecha_fin }}">
+                <div class="card card-event h-100">
+                    <div class="card-event-image-container">
+                        <img src="{{ e.imagen }}" class="card-img-top" alt="{{ e.tipo }}">
+                        <span class="finished-overlay-badge">Finalizado</span>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                {% if e.tipo == 'Música' %}
+                                <span class="badge badge-purple">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Teatro' %}
+                                <span class="badge badge-pink">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Arte' %}
+                                <span class="badge badge-blue">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Deporte' %}
+                                <span class="badge badge-green">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Gastronomía' %}
+                                <span class="badge badge-orange">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Educación' %}
+                                <span class="badge bg-info text-dark">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Vendimia' %}
+                                <span class="badge bg-danger">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Fiesta' %}
+                                <span class="badge bg-warning text-dark">{{ e.tipo }}</span>
+                                {% elif e.tipo == 'Cine' %}
+                                <span class="badge badge-magenta">{{ e.tipo }}</span> 
+                                {% else %}
+                                <span class="badge bg-primary">{{ e.tipo }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <span class="text-muted small d-block">
+                                    <i class="far fa-calendar me-1"></i>
+                                    {% if e.fecha_inicio == e.fecha_fin %}
+                                    {{ e.fecha_inicio | format_date }}
+                                    {% else %}
+                                    {{ e.fecha_inicio | format_date }} al {{ e.fecha_fin | format_date }}
+                                    {% endif %}
+                                    <i class="far fa-clock ms-2 me-1"></i>{{ e.hora }}
+                                </span>
+                            </div>
+
+                            <h5 class="card-title fw-bold">{{ e.nombre }}</h5>
+                            <p class="text-muted card-description">{{ e.descripcion }}</p>
+                        </div>
+
+                        <div>
+                            <div class="d-flex align-items-center text-muted small mb-3">
+                                <i class="fas fa-map-marker-alt me-2 text-danger"></i>
+                                <span>{{ e.lugar }}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">
+                                    {% if e.costo == "0" or e.costo == "" %}
+                                    Gratis
+                                    {% else %}
+                                    ${{ e.costo }}
+                                    {% endif %}
+                                </span>
+                                <a href="{{ url_for('evento_detalle', event_id=e.id) }}"
+                                    class="btn btn-primary-custom btn-sm">
+                                    Ver más
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- MODAL: FORMULARIO DE PREINSCRIPCIÓN A SALA -->
+    <div class="modal fade" id="preinscripcionModal" tabindex="-1" aria-labelledby="preinscripcionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-custom">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="preinscripcionModalLabel">
+                        <i class="fas fa-file-signature me-2"></i>Preinscripción a Escuela Alas del Viento
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ url_for('preinscribir') }}">
+                    <div class="modal-body p-4">
+                        <p class="text-muted small mb-3">Por favor completa tus datos personales para solicitar la preinscripción a la sala deseada.</p>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre y Apellido</label>
+                            <input type="text" class="form-control" name="nombre_apellido" required placeholder="Ej: María González">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">DNI</label>
+                            <input type="text" class="form-control" name="dni" required placeholder="Ej: 45123456">
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" name="fecha_nacimiento" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Edad</label>
+                                <input type="number" class="form-control" name="edad" min="0" max="17" required placeholder="Ej: 8">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Domicilio</label>
+                            <input type="text" class="form-control" name="domicilio" required placeholder="Ej: Av. Alvear Oeste 123">
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control" name="email" required placeholder="correo@ejemplo.com">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Teléfono de contacto</label>
+                                <input type="tel" class="form-control" name="telefono" required placeholder="Ej: 2625 456789">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Sala a la que desea preinscribirse</label>
+                            <select class="form-select fw-bold text-primary" name="sala" id="selectSalaModal" required>
+                                <option value="Sala de 0 a 5 años">Sala de 0 a 5 años</option>
+                                <option value="Sala de 6 a 11 años">Sala de 6 a 11 años</option>
+                                <option value="Sala de 12 a 17 años">Sala de 12 a 17 años</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary-custom px-4"><i class="fas fa-paper-plane me-2"></i>Enviar Preinscripción</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: NUEVO EVENTO -->
+    <div class="modal fade" id="nuevoEventoModal" tabindex="-1" aria-labelledby="nuevoEventoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-custom">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="nuevoEventoModalLabel">Nuevo Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ url_for('agregar_evento') }}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre del evento</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tipo de evento</label>
+                            <select class="form-select" name="tipo" required>
+                                <option value="">Selecciona tipo de evento</option>
+                                <option value="Música">Música</option>
+                                <option value="Educación">Educación</option>
+                                <option value="Teatro">Teatro</option>
+                                <option value="Arte">Arte</option>
+                                <option value="Deporte">Deporte</option>
+                                <option value="Gastronomía">Gastronomía</option>
+                                <option value="Vendimia">Vendimia</option>
+                                <option value="Fiesta">Fiesta</option>
+                                <option value="Cine">Cine</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Inicio</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Fin</label>
+                                <input type="date" class="form-control" name="fecha_fin" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Hora</label>
+                            <input type="time" class="form-control" name="hora" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Costo</label>
+                                <input type="number" class="form-control" name="costo" placeholder="0">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Localidad</label>
+                                <select class="form-select" name="lugar" required>
+                                    <option value="">Selecciona localidad</option>
+                                    <option value="General Alvear Mendoza">General Alvear</option>
+                                    <option value="Bowen General Alvear Mendoza">Bowen</option>
+                                    <option value="San Pedro del Atuel General Alvear Mendoza">San Pedro del Atuel</option>
+                                    <option value="Alvear Oeste General Alvear Mendoza">Alvear Oeste</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Dirección (calle y número o ruta)</label>
+                            <input type="text" class="form-control" name="direccion" placeholder="Ej: Illia 450 o Ruta 188 km 23">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">URL de la imagen</label>
+                            <input type="text" class="form-control" name="imagen" placeholder="/static/img/carrusel1.png o URL externa">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary-custom">Guardar Evento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE PREINSCRIPCIÓN -->
+    {% if preinscripto == 'success' %}
+    <div class="modal fade show" id="successModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4">
+                <div class="modal-body">
+                    <div class="text-success mb-3">
+                        <i class="fas fa-check-circle fa-4x"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">¡Preinscripción Exitosa!</h4>
+                    <p class="text-muted">Tu preinscripción para la <strong>{{ sala_registrada }}</strong> ha sido enviada correctamente a la Escuela de Música Alas del Viento. Pronto nos pondremos en contacto contigo.</p>
+                    <button type="button" class="btn btn-primary-custom px-4 mt-2" onclick="document.getElementById('successModal').style.display='none';">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="institution-footer">
+        <div class="container mb-4">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <h5 class="fw-bold text-white mb-2"><i class="fas fa-music text-primary me-2"></i>Coro y Escuela Alas del Viento</h5>
+                    <p class="small text-muted mb-0">Institución de formación vocal y sinfónica de General Alvear, Mendoza. Fomentando la educación musical, el desarrollo artístico y la inclusión social.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="small text-muted mb-1"><i class="fas fa-map-marker-alt me-2 text-cyan"></i>General Alvear, Mendoza - Argentina</p>
+                    <p class="small text-muted mb-0"><i class="fas fa-envelope me-2 text-cyan"></i>contacto@alasdelviento.edu.ar</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FOOTER INFERIOR FIJO: DESARROLLADORES -->
+    <footer class="footer-fixed">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8 text-center text-md-start mb-2 mb-md-0">
+                    <p class="footer-text fw-semibold">
+                        Desarrollado por Conectados por Mendoza Futura - Episodio 4 2026
+                    </p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="#" class="social-icon me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Lógica para asignar la sala seleccionada al abrir el modal de preinscripción
+        document.querySelectorAll('.btn-preinscribir').forEach(button => {
+            button.addEventListener('click', function() {
+                const salaSeleccionada = this.getAttribute('data-sala');
+                const selectSala = document.getElementById('selectSalaModal');
+                if (selectSala && salaSeleccionada) {
+                    selectSala.value = salaSeleccionada;
+                }
+            });
+        });
+
+        // ---------------------------
+        // FUNCIÓN: AGREGAR ESTADO DE FINALIZADO
+        // ---------------------------
+        function updateEventStatuses() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            document.querySelectorAll('#eventsContainer .event-card-column').forEach(cardColumn => {
+                const dateString = cardColumn.dataset.fecha;
+                if (!dateString) return;
+
+                const eventDate = new Date(dateString + 'T00:00:00');
+                if (eventDate < today) {
+                    cardColumn.classList.add('event-finished');
+                } else {
+                    cardColumn.classList.remove('event-finished');
+                }
+            });
+        }
+
+        window.addEventListener('load', updateEventStatuses);
+
+        // ---------------------------
+        // LÓGICA DE FILTRO POR CATEGORÍAS (DROPDOWN)
+        // ---------------------------
+        document.querySelectorAll('.category-filter').forEach(item => {
+            item.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const filtroActivo = this.dataset.category;
+                const categoriaNombre = this.textContent.trim().replace(/[\u0000-\u007F]/g, '').trim() || this.textContent.trim();
+                const mainDropdownButton = document.getElementById('categoryDropdown');
+
+                document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                mainDropdownButton.innerHTML = `<i class="fas fa-filter me-2"></i>Categorías: ${categoriaNombre}`;
+                mainDropdownButton.dataset.currentCategory = filtroActivo;
+
+                const eventCards = document.querySelectorAll('#eventsContainer .event-card-column');
+                const normalizar = str => (str || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+                eventCards.forEach(card => {
+                    const tipoEvento = card.dataset.tipo || '';
+
+                    if (filtroActivo === "todos") {
+                        card.style.display = "block";
+                    } else if (normalizar(tipoEvento) === normalizar(filtroActivo)) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                updateEventStatuses();
+            });
+        });
+    </script>
+</body>
+
+</html>

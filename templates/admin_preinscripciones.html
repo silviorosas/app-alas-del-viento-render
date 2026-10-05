@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es" style="height: auto; min-height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel SuperAdmin - Alumnos Preinscriptos | Alas del Viento</title>
+
+    <!-- Iconos: Bootstrap Icons & FontAwesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Bootstrap 5.3.2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-cyan: #06b6d4;
+            --primary-teal: #14b8a6;
+            --dark-blue: #1e40af;
+            --dark-bg: #0f172a;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            background-color: #f1f5f9;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            padding-bottom: 90px;
+        }
+
+        /* Gradientes del Proyecto */
+        .bg-blue-gradient {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 50%, var(--primary-teal) 100%);
+        }
+
+        /* Botones personalizados */
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--dark-blue);
+            border-color: var(--dark-blue);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Badges de salas personalizadas según la identidad visual */
+        .badge-sala-0-5 {
+            background-color: #06b6d4;
+            color: #082f49;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-sala-6-11 {
+            background-color: #10b981;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-sala-12-17 {
+            background-color: #9333ea;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* Tarjetas de Métricas KPI */
+        .stat-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.card-total::before { background-color: var(--primary-blue); }
+        .stat-card.card-sala1::before { background-color: #06b6d4; }
+        .stat-card.card-sala2::before { background-color: #10b981; }
+        .stat-card.card-sala3::before { background-color: #9333ea; }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Tabla estilizada */
+        .admin-table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 1rem 1.15rem;
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .avatar-initials {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #3730a3;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        /* Barra de navegación superior */
+        .admin-navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .admin-navbar .navbar-brand {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.35rem;
+        }
+
+        /* Footer institucional fijo */
+        .footer-fixed {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.75rem 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            margin: 0;
+            color: #9ca3af;
+        }
+
+        .social-icon-footer {
+            color: var(--primary-cyan);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            margin-left: 0.75rem;
+            text-decoration: none;
+        }
+
+        .social-icon-footer:hover {
+            color: var(--primary-teal);
+            transform: scale(1.1);
+        }
+
+        /* Estilos para impresión en PDF / Papel */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding-bottom: 0 !important;
+            }
+
+            .admin-navbar,
+            .toolbar-actions,
+            .stat-kpi-row,
+            .footer-fixed,
+            .btn-action-col,
+            .no-print {
+                display: none !important;
+            }
+
+            .admin-table-container {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+
+            .print-header-report {
+                display: block !important;
+                margin-bottom: 1.5rem;
+            }
+
+            .table {
+                font-size: 10pt;
+            }
+
+            .table > :not(caption) > * > * {
+                padding: 0.5rem !important;
+            }
+        }
+
+        .print-header-report {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR SUPERADMIN -->
+    <nav class="navbar navbar-expand-lg admin-navbar sticky-top">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <i class="fas fa-music text-primary me-2 fs-4"></i>
+                <span>Alas del Viento</span>
+                <span class="badge bg-danger ms-3 px-2 py-1 fs-8 text-uppercase fw-bold rounded-pill">
+                    <i class="fas fa-shield-alt me-1"></i>SuperAdmin
+                </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNavbarContent">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2 mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="window.location.reload()" title="Refrescar lista de datos">
+                            <i class="fas fa-arrows-rotate me-1"></i> Refrescar
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3" title="Volver al Portal Público">
+                            <i class="fas fa-arrow-left me-1"></i> Volver al Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger btn-sm rounded-pill px-3" title="Cerrar Sesión de Administrador">
+                            <i class="fas fa-sign-out-alt me-1"></i> Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER PARA IMPRESIÓN OFICIAL -->
+    <div class="container-fluid px-4 print-header-report">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+            <div>
+                <h3 class="fw-bold mb-1 text-primary">Escuela de Música y Coro "Alas del Viento"</h3>
+                <p class="mb-0 text-muted">General Alvear, Mendoza • Nómina Oficial de Alumnos Preinscriptos</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-dark px-3 py-2">Documento Oficial</span>
+                <div class="small text-muted mt-1">Generado: <span id="printDate"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="container-fluid px-lg-4 py-4">
+
+        <!-- ENCABEZADO DEL PANEL -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <h2 class="h3 fw-bold text-slate-800 mb-0">
+                        Panel SuperAdmin - Alumnos Preinscriptos (Alas del Viento)
+                    </h2>
+                    <span class="badge bg-primary rounded-pill px-3 py-2 fs-6 shadow-sm">
+                        <i class="fas fa-user-check me-1"></i> <span id="totalBadgeCounter">{{ total_inscriptos }}</span> Inscriptos
+                    </span>
+                </div>
+                <p class="text-muted mb-0 small">
+                    Control centralizado de solicitudes de vacantes para los ciclos de formación artística y musical.
+                </p>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN RÁPIDA (EXPORTAR / IMPRIMIR) -->
+            <div class="d-flex align-items-center gap-2 toolbar-actions">
+                <button id="btnExportCSV" class="btn btn-success shadow-sm rounded-pill px-3" title="Descargar planilla CSV compatible con Excel">
+                    <i class="fas fa-file-csv me-1"></i> Exportar CSV
+                </button>
+                <button id="btnPrintPDF" class="btn btn-outline-primary shadow-sm rounded-pill px-3" onclick="window.print()" title="Imprimir o guardar como documento PDF">
+                    <i class="fas fa-print me-1"></i> Imprimir / PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- TARJETAS KPIS DE RESUMEN (FILTRABLES AL HACER CLICK) -->
+        <div class="row g-3 mb-4 stat-kpi-row">
+            <!-- Total General -->
+            <div class="col-6 col-lg-3">
+                <div class="card stat-card card-total p-3" onclick="filtrarPorBotonSala('todas')">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">Total General</span>
+                            <h3 class="fw-bold mb-0 text-dark">{{ total_inscriptos }}</h3>
+                            <span class="small text-primary fw-medium"><i class="fas fa-list me-1"></i>Todas las salas</span>
+                        </div>
+                        <div class="stat-icon bg-primary-subtle text-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sala 0 a 5 años -->
+            <div class="col-6 col-lg-3">
+                <div class="card stat-card card-sala1 p-3" onclick="filtrarPorBotonSala('Sala de 0 a 5 años')">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">0 a 5 Años</span>
+                            <h3 class="fw-bold mb-0 text-dark">{{ total_sala_0_5 }}</h3>
+                            <span class="small text-info fw-medium"><i class="fas fa-shapes me-1"></i>Iniciación Musical</span>
+                        </div>
+                        <div class="stat-icon bg-info-subtle text-info">
+                            <i class="fas fa-shapes"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sala 6 a 11 años -->
+            <div class="col-6 col-lg-3">
+                <div class="card stat-card card-sala2 p-3" onclick="filtrarPorBotonSala('Sala de 6 a 11 años')">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">6 a 11 Años</span>
+                            <h3 class="fw-bold mb-0 text-dark">{{ total_sala_6_11 }}</h3>
+                            <span class="small text-success fw-medium"><i class="fas fa-music me-1"></i>Coro Infantil</span>
+                        </div>
+                        <div class="stat-icon bg-success-subtle text-success">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sala 12 a 17 años -->
+            <div class="col-6 col-lg-3">
+                <div class="card stat-card card-sala3 p-3" onclick="filtrarPorBotonSala('Sala de 12 a 17 años')">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small fw-semibold text-uppercase">12 a 17 Años</span>
+                            <h3 class="fw-bold mb-0 text-dark">{{ total_sala_12_17 }}</h3>
+                            <span class="small text-purple fw-medium" style="color: #9333ea;"><i class="fas fa-guitar me-1"></i>Ensamble Juvenil</span>
+                        </div>
+                        <div class="stat-icon bg-purple-subtle" style="background-color: #f3e8ff; color: #9333ea;">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE FILTROS RÁPIDOS EN TIEMPO REAL -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4 toolbar-actions bg-white">
+            <div class="row g-3 align-items-center">
+                <!-- Buscador de texto (Nombre o DNI) -->
+                <div class="col-12 col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="inputBuscador" class="form-control bg-light border-start-0 ps-0" 
+                               placeholder="Buscar en tiempo real por Nombre o DNI..." autocomplete="off">
+                        <button class="btn btn-light border" type="button" id="btnClearSearch" title="Borrar búsqueda" style="display:none;">
+                            <i class="fas fa-times text-muted"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selector de Sala -->
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted">
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        <select id="selectFiltroSala" class="form-select bg-light fw-medium">
+                            <option value="todas">Todas las Salas</option>
+                            <option value="Sala de 0 a 5 años">Sala de 0 a 5 años (Iniciación)</option>
+                            <option value="Sala de 6 a 11 años">Sala de 6 a 11 años (Coro Infantil)</option>
+                            <option value="Sala de 12 a 17 años">Sala de 12 a 17 años (Orquesta / Juvenil)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botón de Reset y Contador -->
+                <div class="col-12 col-sm-6 col-md-3 text-md-end d-flex align-items-center justify-content-between justify-content-md-end gap-2">
+                    <span class="badge bg-light text-dark border px-3 py-2 small">
+                        Mostrando <strong id="contadorFiltrados" class="text-primary">{{ preinscripciones|length }}</strong> de {{ total_inscriptos }}
+                    </span>
+                    <button id="btnResetFilters" class="btn btn-sm btn-outline-secondary rounded-pill" title="Restablecer todos los filtros">
+                        <i class="fas fa-rotate-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLA DE DATOS RESPONSIVA -->
+        <div class="admin-table-container">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tablaPreinscripciones">
+                    <thead class="table-light text-secondary border-bottom">
+                        <tr class="small text-uppercase fw-semibold" style="letter-spacing: 0.5px;">
+                            <th class="ps-4" style="width: 70px;"># ID</th>
+                            <th>Alumno / Solicitante</th>
+                            <th>DNI</th>
+                            <th>Nacimiento / Edad</th>
+                            <th>Sala Solicitada</th>
+                            <th>Contacto</th>
+                            <th>Domicilio</th>
+                            <th>Fecha Inscripción</th>
+                            <th class="text-center no-print" style="width: 100px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyPreinscripciones">
+                        {% if preinscripciones %}
+                            {% for p in preinscripciones %}
+                            <tr class="fila-preinscripcion" 
+                                data-nombre="{{ p.nombre_apellido | lower }}"
+                                data-dni="{{ p.dni | lower }}"
+                                data-sala="{{ p.sala }}"
+                                data-email="{{ p.email }}"
+                                data-telefono="{{ p.telefono }}"
+                                data-edad="{{ p.edad }}"
+                                data-domicilio="{{ p.domicilio }}"
+                                data-fecha-nac="{{ p.fecha_nacimiento }}"
+                                data-created="{{ p.created_at | format_date }}"
+                                data-id="{{ p.id }}">
+                                
+                                <!-- 1. ID -->
+                                <td class="ps-4">
+                                    <span class="badge bg-light text-secondary border fw-bold">#{{ p.id }}</span>
+                                </td>
+
+                                <!-- 2. Nombre y Apellido -->
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-initials">
+                                            {{ p.nombre_apellido[:2] | upper }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark">{{ p.nombre_apellido }}</div>
+                                            <div class="small text-muted d-md-none"><i class="fas fa-id-card me-1"></i>{{ p.dni }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- 3. DNI -->
+                                <td>
+                                    <span class="badge bg-light text-dark border font-monospace px-2 py-1">
+                                        {{ p.dni }}
+                                    </span>
+                                </td>
+
+                                <!-- 4. Fecha Nacimiento / Edad -->
+                                <td>
+                                    <div class="fw-medium text-dark">{{ p.fecha_nacimiento }}</div>
+                                    <div class="small text-muted"><span class="badge bg-secondary-subtle text-secondary">{{ p.edad }} años</span></div>
+                                </td>
+
+                                <!-- 5. Sala con Badge Personalizada -->
+                                <td>
+                                    {% if '0 a 5' in p.sala %}
+                                        <span class="badge badge-sala-0-5 px-3 py-2 rounded-pill shadow-sm">
+                                            <i class="fas fa-shapes me-1"></i>0 a 5 Años
+                                        </span>
+                                    {% elif '6 a 11' in p.sala %}
+                                        <span class="badge badge-sala-6-11 px-3 py-2 rounded-pill shadow-sm">
+                                            <i class="fas fa-microphone me-1"></i>6 a 11 Años
+                                        </span>
+                                    {% elif '12 a 17' in p.sala %}
+                                        <span class="badge badge-sala-12-17 px-3 py-2 rounded-pill shadow-sm">
+                                            <i class="fas fa-guitar me-1"></i>12 a 17 Años
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                            {{ p.sala }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <!-- 6. Contacto (Email y Teléfono con enlaces interactivos) -->
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <a href="mailto:{{ p.email }}" class="text-decoration-none small text-dark d-inline-flex align-items-center" title="Enviar correo">
+                                            <i class="fas fa-envelope text-primary me-2"></i>
+                                            <span class="text-truncate" style="max-width: 170px;">{{ p.email }}</span>
+                                        </a>
+                                        <div class="d-inline-flex align-items-center gap-2">
+                                            <a href="tel:{{ p.telefono }}" class="text-decoration-none small text-muted" title="Llamar">
+                                                <i class="fas fa-phone-alt text-success me-1"></i>{{ p.telefono }}
+                                            </a>
+                                            <!-- Botón rápido WhatsApp -->
+                                            <a href="https://api.whatsapp.com/send?phone={{ p.telefono | replace(' ', '') | replace('+', '') | replace('-', '') }}&text=Hola%20familia%20de%20{{ p.nombre_apellido | urlencode }},%20nos%20comunicamos%20desde%20la%20Escuela%20de%20M%C3%BAsica%20Alas%20del%20Viento." 
+                                               target="_blank" class="badge bg-success-subtle text-success p-1 text-decoration-none" title="Enviar WhatsApp">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- 7. Domicilio -->
+                                <td>
+                                    <div class="small text-secondary d-flex align-items-center" style="max-width: 220px;">
+                                        <i class="fas fa-location-dot text-danger me-2 flex-shrink-0"></i>
+                                        <span>{{ p.domicilio }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- 8. Fecha de Inscripción formateada con el filtro format_date -->
+                                <td>
+                                    <div class="small fw-medium text-dark">
+                                        <i class="fas fa-calendar-check text-muted me-1"></i>
+                                        {{ p.created_at | format_date }}
+                                    </div>
+                                </td>
+
+                                <!-- 9. Acciones Rápidas -->
+                                <td class="text-center no-print">
+                                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill btn-ver-ficha" 
+                                            onclick="abrirFichaModal(this)" title="Ver ficha completa">
+                                        <i class="fas fa-eye"></i> Ficha
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr id="filaSinDatos">
+                                <td colspan="9" class="text-center py-5 text-muted">
+                                    <i class="fas fa-inbox fa-3x mb-3 text-secondary"></i>
+                                    <p class="fs-5 mb-1">Aún no hay alumnos preinscriptos en el sistema</p>
+                                    <p class="small text-muted">Las solicitudes enviadas desde la página principal aparecerán aquí automáticamente.</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        <!-- Fila dinámica cuando no hay resultados de búsqueda -->
+                        <tr id="filaNoResultados" style="display: none;">
+                            <td colspan="9" class="text-center py-5 text-muted">
+                                <i class="fas fa-search fa-3x mb-3 text-secondary"></i>
+                                <h5 class="fw-bold mb-1">No se encontraron preinscripciones</h5>
+                                <p class="small text-muted mb-3">Ningún registro coincide con los criterios de búsqueda seleccionados.</p>
+                                <button class="btn btn-outline-primary btn-sm rounded-pill" onclick="restablecerFiltros()">
+                                    <i class="fas fa-rotate-left me-1"></i> Limpiar Filtros
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL DETALLE: FICHA INDIVIDUAL DEL ALUMNO -->
+    <div class="modal fade no-print" id="fichaAlumnoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow border-0">
+                <div class="modal-header bg-blue-gradient text-white">
+                    <h5 class="modal-title fw-bold" id="modalAlumnoTitulo">
+                        <i class="fas fa-id-card-clip me-2"></i>Ficha de Preinscripción
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="avatar-initials mx-auto mb-2" id="modalAvatar" style="width: 60px; height: 60px; font-size: 1.4rem;">
+                            AV
+                        </div>
+                        <h4 class="fw-bold mb-1" id="modalNombre">Nombre Alumno</h4>
+                        <div id="modalSalaBadge"></div>
+                    </div>
+
+                    <div class="list-group list-group-flush rounded-3 border">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-hashtag me-2"></i>ID Registro</span>
+                            <span class="fw-bold" id="modalId">#0</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-fingerprint me-2"></i>DNI</span>
+                            <span class="fw-bold font-monospace" id="modalDni">-</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-cake-candles me-2"></i>Nacimiento / Edad</span>
+                            <span class="fw-medium" id="modalEdad">-</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-envelope me-2"></i>Email</span>
+                            <a href="#" id="modalEmailLink" class="text-decoration-none fw-medium">-</a>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-phone me-2"></i>Teléfono</span>
+                            <a href="#" id="modalTelefonoLink" class="text-decoration-none fw-medium">-</a>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-map-pin me-2"></i>Domicilio</span>
+                            <span class="fw-medium text-end" id="modalDomicilio">-</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="text-muted"><i class="fas fa-clock me-2"></i>Fecha Registro</span>
+                            <span class="small text-muted" id="modalFechaRegistro">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cerrar</button>
+                    <div class="d-flex gap-2">
+                        <a href="#" id="modalWhatsappBtn" target="_blank" class="btn btn-success rounded-pill px-3">
+                            <i class="fab fa-whatsapp me-1"></i> Contactar
+                        </a>
+                        <button type="button" class="btn btn-outline-primary rounded-pill" onclick="window.print()">
+                            <i class="fas fa-print me-1"></i> Imprimir Ficha
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER FIJO INSTITUCIONAL -->
+    <footer class="footer-fixed">
+        <div class="container-fluid px-lg-4">
+            <div class="row align-items-center">
+                <div class="col-md-8 text-center text-md-start mb-2 mb-md-0">
+                    <p class="footer-text">
+                        Alas del Viento • Desarrollado por Conectados por Mendoza Futura - Episodio 4 2026
+                    </p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <span class="footer-text me-3">General Alvear, Mendoza</span>
+                    <a href="#" class="social-icon-footer" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon-footer" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon-footer" title="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3.2 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- LÓGICA JAVASCRIPT VANILLA PARA FILTROS EN TIEMPO REAL, MODAL Y EXPORTACIÓN -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputBuscador = document.getElementById('inputBuscador');
+            const btnClearSearch = document.getElementById('btnClearSearch');
+            const selectFiltroSala = document.getElementById('selectFiltroSala');
+            const btnResetFilters = document.getElementById('btnResetFilters');
+            const btnExportCSV = document.getElementById('btnExportCSV');
+            const contadorFiltrados = document.getElementById('contadorFiltrados');
+            const filaNoResultados = document.getElementById('filaNoResultados');
+            const filas = Array.from(document.querySelectorAll('.fila-preinscripcion'));
+
+            // Fecha en el encabezado de impresión
+            const printDateEl = document.getElementById('printDate');
+            if (printDateEl) {
+                const now = new Date();
+                printDateEl.textContent = now.toLocaleDateString('es-AR') + ' ' + now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            // Función central de filtrado en tiempo real
+            function aplicarFiltros() {
+                const query = inputBuscador.value.trim().toLowerCase();
+                const salaSeleccionada = selectFiltroSala.value;
+
+                // Mostrar/Ocultar botón de borrado de búsqueda
+                if (query.length > 0) {
+                    btnClearSearch.style.display = 'block';
+                } else {
+                    btnClearSearch.style.display = 'none';
+                }
+
+                let visibles = 0;
+
+                filas.forEach(fila => {
+                    const nombre = fila.getAttribute('data-nombre') || '';
+                    const dni = fila.getAttribute('data-dni') || '';
+                    const sala = fila.getAttribute('data-sala') || '';
+
+                    // Comprobación de texto (Nombre o DNI)
+                    const coincideTexto = !query || nombre.includes(query) || dni.includes(query);
+
+                    // Comprobación de sala
+                    let coincideSala = false;
+                    if (salaSeleccionada === 'todas') {
+                        coincideSala = true;
+                    } else if (salaSeleccionada === 'Sala de 0 a 5 años') {
+                        coincideSala = sala.includes('0 a 5');
+                    } else if (salaSeleccionada === 'Sala de 6 a 11 años') {
+                        coincideSala = sala.includes('6 a 11');
+                    } else if (salaSeleccionada === 'Sala de 12 a 17 años') {
+                        coincideSala = sala.includes('12 a 17');
+                    } else {
+                        coincideSala = sala === salaSeleccionada;
+                    }
+
+                    if (coincideTexto && coincideSala) {
+                        fila.style.display = '';
+                        visibles++;
+                    } else {
+                        fila.style.display = 'none';
+                    }
+                });
+
+                // Actualizar contador
+                if (contadorFiltrados) {
+                    contadorFiltrados.textContent = visibles;
+                }
+
+                // Mostrar estado sin resultados si es necesario
+                if (filaNoResultados) {
+                    if (visibles === 0 && filas.length > 0) {
+                        filaNoResultados.style.display = '';
+                    } else {
+                        filaNoResultados.style.display = 'none';
+                    }
+                }
+            }
+
+            // Event Listeners para búsqueda en tiempo real
+            inputBuscador.addEventListener('input', aplicarFiltros);
+            inputBuscador.addEventListener('keyup', aplicarFiltros);
+            selectFiltroSala.addEventListener('change', aplicarFiltros);
+
+            btnClearSearch.addEventListener('click', () => {
+                inputBuscador.value = '';
+                aplicarFiltros();
+                inputBuscador.focus();
+            });
+
+            // Función global para restablecer
+            window.restablecerFiltros = () => {
+                inputBuscador.value = '';
+                selectFiltroSala.value = 'todas';
+                aplicarFiltros();
+            };
+
+            btnResetFilters.addEventListener('click', window.restablecerFiltros);
+
+            // Filtrado rápido al hacer click en los KPIs superiores
+            window.filtrarPorBotonSala = (salaValor) => {
+                selectFiltroSala.value = salaValor;
+                aplicarFiltros();
+                // Scroll suave a la tabla
+                document.getElementById('tablaPreinscripciones').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            };
+
+            // EXPORTACIÓN A CSV CON FORMATO UTF-8 BOM (Soporta acentos y eñes en Excel)
+            btnExportCSV.addEventListener('click', () => {
+                // Obtener sólo las filas visibles actualmente
+                const filasVisibles = filas.filter(f => f.style.display !== 'none');
+
+                if (filasVisibles.length === 0) {
+                    alert('No hay registros visibles para exportar.');
+                    return;
+                }
+
+                const encabezados = [
+                    'ID',
+                    'Nombre y Apellido',
+                    'DNI',
+                    'Fecha Nacimiento',
+                    'Edad',
+                    'Sala',
+                    'Email',
+                    'Telefono',
+                    'Domicilio',
+                    'Fecha Preinscripcion'
+                ];
+
+                const lineasCsv = [];
+                lineasCsv.push(encabezados.map(h => `"${h.replace(/"/g, '""')}"`).join(';'));
+
+                filasVisibles.forEach(f => {
+                    const rowData = [
+                        f.getAttribute('data-id') || '',
+                        f.getAttribute('data-nombre') || '',
+                        f.getAttribute('data-dni') || '',
+                        f.getAttribute('data-fecha-nac') || '',
+                        f.getAttribute('data-edad') || '',
+                        f.getAttribute('data-sala') || '',
+                        f.getAttribute('data-email') || '',
+                        f.getAttribute('data-telefono') || '',
+                        f.getAttribute('data-domicilio') || '',
+                        f.getAttribute('data-created') || ''
+                    ];
+
+                    lineasCsv.push(rowData.map(item => `"${String(item).replace(/"/g, '""')}"`).join(';'));
+                });
+
+                // UTF-8 BOM (\uFEFF) para evitar caracteres rotos en Excel en español
+                const csvContent = '\uFEFF' + lineasCsv.join('\r\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const enlace = document.createElement('a');
+
+                const fechaHoy = new Date().toISOString().split('T')[0];
+                enlace.setAttribute('href', url);
+                enlace.setAttribute('download', `Preinscripciones_AlasDelViento_${fechaHoy}.csv`);
+                document.body.appendChild(enlace);
+                enlace.click();
+                document.body.removeChild(enlace);
+                URL.revokeObjectURL(url);
+            });
+
+            // GESTIÓN DEL MODAL DE FICHA DEL ALUMNO
+            const modalElement = document.getElementById('fichaAlumnoModal');
+            const bsModal = new bootstrap.Modal(modalElement);
+
+            window.abrirFichaModal = (btn) => {
+                const tr = btn.closest('tr');
+                if (!tr) return;
+
+                const id = tr.getAttribute('data-id');
+                const nombre = tr.querySelector('.fw-bold.text-dark') ? tr.querySelector('.fw-bold.text-dark').textContent : tr.getAttribute('data-nombre');
+                const dni = tr.getAttribute('data-dni');
+                const fechaNac = tr.getAttribute('data-fecha-nac');
+                const edad = tr.getAttribute('data-edad');
+                const sala = tr.getAttribute('data-sala');
+                const email = tr.getAttribute('data-email');
+                const telefono = tr.getAttribute('data-telefono');
+                const domicilio = tr.getAttribute('data-domicilio');
+                const created = tr.getAttribute('data-created');
+
+                document.getElementById('modalId').textContent = '#' + id;
+                document.getElementById('modalNombre').textContent = nombre;
+                document.getElementById('modalAvatar').textContent = nombre.trim().substring(0, 2).toUpperCase();
+                document.getElementById('modalDni').textContent = dni;
+                document.getElementById('modalEdad').textContent = `${fechaNac} (${edad} años)`;
+                document.getElementById('modalDomicilio').textContent = domicilio;
+                document.getElementById('modalFechaRegistro').textContent = created;
+
+                const emailLink = document.getElementById('modalEmailLink');
+                emailLink.textContent = email;
+                emailLink.href = 'mailto:' + email;
+
+                const telLink = document.getElementById('modalTelefonoLink');
+                telLink.textContent = telefono;
+                telLink.href = 'tel:' + telefono;
+
+                // Badge de la sala
+                const modalSalaBadge = document.getElementById('modalSalaBadge');
+                if (sala.includes('0 a 5')) {
+                    modalSalaBadge.innerHTML = `<span class="badge badge-sala-0-5 px-3 py-2 rounded-pill"><i class="fas fa-shapes me-1"></i>${sala}</span>`;
+                } else if (sala.includes('6 a 11')) {
+                    modalSalaBadge.innerHTML = `<span class="badge badge-sala-6-11 px-3 py-2 rounded-pill"><i class="fas fa-microphone me-1"></i>${sala}</span>`;
+                } else if (sala.includes('12 a 17')) {
+                    modalSalaBadge.innerHTML = `<span class="badge badge-sala-12-17 px-3 py-2 rounded-pill"><i class="fas fa-guitar me-1"></i>${sala}</span>`;
+                } else {
+                    modalSalaBadge.innerHTML = `<span class="badge bg-secondary px-3 py-2 rounded-pill">${sala}</span>`;
+                }
+
+                // WhatsApp link
+                const cleanTel = telefono.replace(/[^\d]/g, '');
+                const waBtn = document.getElementById('modalWhatsappBtn');
+                waBtn.href = `https://api.whatsapp.com/send?phone=${cleanTel}&text=${encodeURIComponent('Hola familia de ' + nombre + ', nos comunicamos desde la Escuela de Música y Coro Alas del Viento.')}`;
+
+                bsModal.show();
+            };
+        });
+    </script>
+</body>
+
+</html>
