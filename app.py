@@ -410,6 +410,44 @@ def admin_preinscripciones():
     )
 
 
+@app.route("/admin/editar_preinscripcion", methods=["POST"])
+def admin_editar_preinscripcion():
+    """Edita los datos de una preinscripción existente. Solo accesible con sesión admin activa."""
+    if not session.get("admin_authenticated"):
+        return redirect(url_for("index"))
+
+    pid      = request.form.get("id")
+    nombre   = request.form.get("nombre_apellido", "").strip()
+    dni      = request.form.get("dni", "").strip()
+    fecha_n  = request.form.get("fecha_nacimiento", "").strip()
+    edad     = request.form.get("edad", "0")
+    domicil  = request.form.get("domicilio", "").strip()
+    email    = request.form.get("email", "").strip()
+    telefono = request.form.get("telefono", "").strip()
+    sala     = request.form.get("sala", "").strip()
+
+    try:
+        p = Preinscripcion.query.get(int(pid))
+        if p:
+            p.nombre_apellido  = nombre
+            p.dni              = dni
+            p.fecha_nacimiento = fecha_n
+            p.edad             = int(edad) if edad else 0
+            p.domicilio        = domicil
+            p.email            = email
+            p.telefono         = telefono
+            p.sala             = sala
+            db.session.commit()
+            print(f"✅ Preinscripción #{pid} actualizada correctamente.")
+        else:
+            print(f"⚠️ Preinscripción #{pid} no encontrada.")
+    except Exception as err:
+        db.session.rollback()
+        print(f"❌ Error al editar preinscripción #{pid}: {err}")
+
+    return redirect(url_for("admin_preinscripciones"))
+
+
 @app.route("/admin/logout")
 def admin_logout():
     """Cierra la sesión administrativa."""
