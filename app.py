@@ -13,9 +13,12 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 # datetime/date: se usan para validar fechas y para el filtro `format_date`
 from datetime import datetime, date
-# pymysql: driver para conectarse a MySQL (cursors permite obtener filas como diccionarios)
-import pymysql
-import pymysql.cursors
+# pymysql: driver para conectarse a MySQL (con manejo seguro por si no está instalado)
+try:
+    import pymysql
+    import pymysql.cursors
+except ImportError:
+    pymysql = None
 
 # Crea la aplicación Flask; las plantillas se buscan en la carpeta /templates
 app = Flask(__name__)
@@ -47,7 +50,7 @@ DB_CONFIG = {
     "password": os.environ.get("DB_PASSWORD", "root"),
     "database": os.environ.get("DB_NAME", "alas_del_viento"),
     "charset": "utf8mb4",
-    "cursorclass": pymysql.cursors.DictCursor,
+    "cursorclass": (pymysql.cursors.DictCursor if pymysql else None),
 }
 
 # Imagen que se usa cuando el evento se crea sin URL de imagen
@@ -79,7 +82,9 @@ SALAS_VALIDAS = [
 
 
 def get_db_connection():
-    """Abre una conexión nueva a la base de datos."""
+    """Abre una conexión nueva a la base de datos si pymysql está disponible."""
+    if pymysql is None:
+        raise Exception("El paquete pymysql no está disponible en este entorno.")
     return pymysql.connect(**DB_CONFIG)
 
 
