@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nombre": "Concierto: Coro, Guitarra y Piano",
+    "descripcion": "Presentación especial de fin de año de los ensambles de Coro, Guitarra y Piano de la institución en el Polo Educativo - IES.",
+    "tipo": "Coro, Guitarra y Piano",
+    "fecha_inicio": "2026-11-27",
+    "fecha_fin": "2026-11-27",
+    "hora": "20:00",
+    "costo": "0",
+    "lugar": "General Alvear Mendoza",
+    "lugar_corto": "General Alvear",
+    "direccion": "RN 188 y Silvio Tricherri, Polo Educativo - IES",
+    "imagen": "/static/img/evento_coro_guitarra_piano.jpg"
+  },
+  {
+    "id": 2,
+    "nombre": "Acordes de Navidad - La música que nos abraza",
+    "descripcion": "Gran concierto navideño bajo el lema 'La música que nos abraza', interpretado conjuntamente por la Orquesta Vivaldi y la Orquesta Bach.",
+    "tipo": "Orquesta Vivaldi, Orquesta Bach",
+    "fecha_inicio": "2026-11-28",
+    "fecha_fin": "2026-11-28",
+    "hora": "20:30",
+    "costo": "8000",
+    "lugar": "General Alvear Mendoza",
+    "lugar_corto": "General Alvear",
+    "direccion": "Escuela Carlos María de Alvear",
+    "imagen": "/static/img/evento_acordes_navidad.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Miniorquesta en Concierto",
+    "descripcion": "Concierto de fin de año de la Miniorquesta con repertorio festivo y familiar en la Escuela Carlos María.",
+    "tipo": "Mini Alas",
+    "fecha_inicio": "2026-12-03",
+    "fecha_fin": "2026-12-03",
+    "hora": "20:30",
+    "costo": "8000",
+    "lugar": "General Alvear Mendoza",
+    "lugar_corto": "General Alvear",
+    "direccion": "Escuela Carlos María de Alvear",
+    "imagen": "/static/img/evento_miniorquesta.jpg"
+  }
+]

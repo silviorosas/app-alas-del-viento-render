@@ -1,0 +1,92 @@
+{# PARCIAL: modal "Nuevo Evento" (formulario único). Se incluye en index.html y en dashboard.html
+   con {% include %}, así los dos sitios usan exactamente el mismo formulario. #}
+    <!-- MODAL NUEVO EVENTO -->
+    <div class="modal fade" id="nuevoEventoModal" tabindex="-1" aria-labelledby="nuevoEventoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-custom">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="nuevoEventoModalLabel">Nuevo Evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Envía los datos a la ruta /agregar_evento (app.py). Los atributos name coinciden con los que lee el servidor -->
+                <form method="POST" action="{{ url_for('agregar_evento') }}">
+                    {# Si el formulario se abre desde el dashboard, el servidor vuelve al dashboard al terminar #}
+                    {% if request.endpoint == 'admin_dashboard' %}<input type="hidden" name="desde_dashboard" value="1">{% endif %}
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre del evento</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción</label>
+                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Inicio</label>
+                                <input type="date" class="form-control" name="fecha_inicio" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Fecha de Fin</label>
+                                <input type="date" class="form-control" name="fecha_fin" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Hora</label>
+                            <input type="time" class="form-control" name="hora" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Costo</label>
+                                <!-- Costo: vacío o 0 = gratis -->
+                                <input type="number" min="0" step="any" class="form-control" name="costo" placeholder="0 (Gratis)">
+                                <div class="form-text text-muted">Dejar vacío o 0 para evento gratis.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Localidad</label>
+                                <!-- El value es el lugar LARGO (para Google Maps); app.py calcula el lugar corto visible (lugar_corto) -->
+                                <select class="form-select" name="lugar" required>
+                                    <option value="">Selecciona localidad</option>
+
+                                    <option value="General Alvear Mendoza">General Alvear</option>
+                                    <option value="Bowen General Alvear Mendoza">Bowen</option>
+                                    <option value="San Pedro del Atuel General Alvear Mendoza">San Pedro del Atuel
+                                    </option>
+                                    <option value="Alvear Oeste General Alvear Mendoza">Alvear Oeste</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Dirección (calle y número o ruta)</label>
+                            <input type="text" class="form-control" name="direccion"
+                                placeholder="Ej: Illia 450 o Ruta 188 km 23">
+                        </div>
+
+                        <div class="mb-3">
+                            <!-- Opcional: si se deja vacío, app.py usa la imagen por defecto -->
+                            <label class="form-label fw-semibold">URL de la imagen</label>
+                            <input type="url" class="form-control" name="imagen"
+                                placeholder="https://example.com/imagen.jpg">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary-custom">Guardar Evento</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>

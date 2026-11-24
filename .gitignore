@@ -2,9 +2,3 @@ __pycache__/
 *.pyc
 .env
 venv/
-.venv/
-
-# Documentación y archivos excluidos para Git
-PROJECT_CONTEXT.md
-project_context.md
-requerimientos.txt

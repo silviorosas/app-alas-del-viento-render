@@ -1,0 +1,74 @@
+[
+  {
+    "id": 6,
+    "nombre_apellido": "Juan Perez",
+    "dni": "44231568",
+    "fecha_nacimiento": "2016-12-12",
+    "edad": 10,
+    "domicilio": "Calle 22",
+    "email": "jp@email.com",
+    "telefono": "2625214477",
+    "sala": "Orquesta Bach",
+    "created_at": "2026-11-24T11:03:49.861251"
+  },
+  {
+    "id": 1,
+    "nombre_apellido": "Sofía Martínez",
+    "dni": "48123456",
+    "fecha_nacimiento": "2015-06-12",
+    "edad": 9,
+    "domicilio": "Av. Alvear Oeste 450",
+    "email": "sofia.martinez@email.com",
+    "telefono": "2625-451234",
+    "sala": "Mini Alas",
+    "created_at": "2026-11-24T10:59:57.310814"
+  },
+  {
+    "id": 2,
+    "nombre_apellido": "Joaquín Gómez",
+    "dni": "47987654",
+    "fecha_nacimiento": "2014-03-22",
+    "edad": 10,
+    "domicilio": "Calle Zeballos 120, Bowen",
+    "email": "joaquin.gomez@email.com",
+    "telefono": "2625-567890",
+    "sala": "Minisinfónicos",
+    "created_at": "2026-11-24T10:59:57.310814"
+  },
+  {
+    "id": 3,
+    "nombre_apellido": "Mateo Fernández",
+    "dni": "45234567",
+    "fecha_nacimiento": "2011-09-18",
+    "edad": 13,
+    "domicilio": "San Pedro del Atuel s/n",
+    "email": "mateo.fernandez@email.com",
+    "telefono": "2625-678901",
+    "sala": "Orquesta Bach",
+    "created_at": "2026-11-24T10:59:57.310814"
+  },
+  {
+    "id": 4,
+    "nombre_apellido": "Lucía Morales",
+    "dni": "43567890",
+    "fecha_nacimiento": "2009-11-05",
+    "edad": 15,
+    "domicilio": "Paso de los Andes 320",
+    "email": "lucia.morales@email.com",
+    "telefono": "2625-789012",
+    "sala": "Orquesta Vivaldi",
+    "created_at": "2026-11-24T10:59:57.310814"
+  },
+  {
+    "id": 5,
+    "nombre_apellido": "Valentín Castro",
+    "dni": "42112233",
+    "fecha_nacimiento": "2007-04-14",
+    "edad": 17,
+    "domicilio": "Ruta 188 km 22",
+    "email": "valentin.castro@email.com",
+    "telefono": "2625-890123",
+    "sala": "Filarmónica/Avanzados",
+    "created_at": "2026-11-24T10:59:57.310814"
+  }
+]
